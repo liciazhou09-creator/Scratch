@@ -76,50 +76,53 @@
     const svg = document.getElementById('coloring');
     function area(id, d) { return `<path class="color-area" data-id="${id}" d="${d}" />`; }
     function garden() { return `
-      <path class="line" d="M104 543h512M152 543c5-89 30-157 77-204m25 204c-2-140 19-235 62-284m52 284c6-125-7-208-39-250m91 250c-6-108 14-190 58-245m44 245c-5-76 6-135 36-177"/>
-      ${area('sky','M67 67H653V543H67Z')}
-      ${area('sun','M521 104a53 53 0 1 0 .1 0Z')}
-      <path class="detail" d="M521 34v23m0 94v23m70-70h-23m-94 0h-23m118 50-16-16m-65-65-16-16m0 97-16 16m65-65 16-16"/>
-      ${area('hill-left','M67 543V439c53-5 86-52 150-34 61 17 93 82 152 48v90Z')}
-      ${area('hill-right','M369 543v-90c70-54 123-8 165-25 38-16 62-51 119-46v161Z')}
-      ${area('flower1','M176 359c-35-35 13-66 27-29 15-37 63-6 27 29 36 35-12 66-27 29-14 37-62 6-27-29Z')}
-      <circle class="color-area" data-id="flower1-center" cx="203" cy="359" r="10"/>
-      ${area('flower2','M286 274c-31-31 11-58 24-25 13-33 55-6 24 25 31 31-11 58-24 25-13 33-55 6-24-25Z')}
-      <circle class="color-area" data-id="flower2-center" cx="310" cy="274" r="9"/>
-      ${area('flower3','M451 308c-32-32 12-60 25-26 13-34 57-6 25 26 32 32-12 60-25 26-13 34-57 6-25-26Z')}
-      <circle class="color-area" data-id="flower3-center" cx="476" cy="308" r="9"/>
-      <path class="detail" d="M203 388v155m107-244v244m166-209v209m-273-105c-23-17-38-7-42 9m149-75c24-13 38-1 39 14m127 32c25-15 41-3 42 14"/>
-      <path class="detail" d="M100 142c18-16 36-16 54 0m24 49c14-13 29-13 43 0"/>
+      ${area('sky','M66 66H654V544H66Z')}
+      <circle class="color-area" data-id="sun" cx="540" cy="137" r="45"/>
+      ${area('hills','M66 544V442c72-67 135-37 192 5 57 42 112 17 161-21 51-40 119-36 235 28v90Z')}
+      <path class="line" d="M66 544h588M66 442c72-67 135-37 192 5 57 42 112 17 161-21 51-40 119-36 235 28"/>
+      <path class="detail" d="M540 70v24m0 86v24m67-67h-24m-86 0h-24m91 43-17-17m-58-58-17-17m0 92-17 17m58-58 17-17"/>
+      <path class="line" d="M186 544V385m132 159V319m166 225V350m128 194V412"/>
+      ${area('flower1','M186 385c-30-31 9-57 24-25 15-32 54-6 24 25 30 31-9 57-24 25-15 32-54 6-24-25Z')}
+      <circle class="color-area" data-id="flower1-center" cx="210" cy="385" r="9"/>
+      ${area('flower2','M318 319c-34-35 10-64 27-28 17-36 61-7 27 28 34 35-10 64-27 28-17 36-61 7-27-28Z')}
+      <circle class="color-area" data-id="flower2-center" cx="345" cy="319" r="10"/>
+      ${area('flower3','M484 350c-32-33 10-61 25-27 16-34 58-6 25 27 33 33-9 61-25 27-16 34-58 6-25-27Z')}
+      <circle class="color-area" data-id="flower3-center" cx="509" cy="350" r="9"/>
+      ${area('flower4','M612 412c-25-26 8-49 20-21 12-28 45-5 20 21 25 26-8 49-20 21-12 28-45 5-20-21Z')}
+      <circle class="color-area" data-id="flower4-center" cx="632" cy="412" r="8"/>
+      <path class="detail" d="M186 465c-24-18-38-7-42 8m201-91c25-19 40-6 43 11m121 40c24-18 39-5 42 10m81 27c-20-16-33-5-35 8M108 164c17-15 34-15 51 0m19 43c14-12 28-12 42 0"/>
     `; }
     function tea() { return `
-      ${area('wall','M67 67H653V490H67Z')}
-      ${area('table','M67 490H653V573H67Z')}
-      ${area('window','M100 104H297V309H100Z')}
-      ${area('window-sky','M115 119H282V294H115Z')}
-      <path class="line" d="M198 119v175M115 207h167"/>
-      ${area('curtain-left','M81 91c24 46 23 183 2 242 52-27 76-34 113-25V91Z')}
-      ${area('curtain-right','M297 91c-24 46-23 183-2 242-52-27-76-34-113-25V91Z')}
-      ${area('teapot','M376 367c-9-88 45-137 109-111 51 21 53 96 30 142H376Z')}
-      ${area('teapot-lid','M405 262c21-28 61-28 82 0Z')}
-      <path class="line" d="M515 310c75-12 83 93 15 98M376 300c-50 10-67 49-75 88 25 5 49-2 76-20"/>
-      ${area('cup','M224 421h103v58c0 28-103 28-103 0Z')}
-      <path class="line" d="M327 434c53-4 50 58 0 50"/>
-      ${area('saucer','M200 489h151c-17 35-129 35-151 0Z')}
-      ${area('plant-pot','M552 414h65l-9 85h-47Z')}
-      ${area('leaf1','M577 414c-51-31-27-88 5-44Z')}${area('leaf2','M584 414c10-59 62-55 28 2Z')}${area('leaf3','M585 414c-7-61-52-64-23-5Z')}
-      <path class="detail" d="M104 530h512M411 341c14 8 29 8 42 0m-199 104h42"/>
+      ${area('wall','M66 66H654V490H66Z')}
+      ${area('table','M66 490H654V574H66Z')}
+      ${area('window-sky','M113 116H293V296H113Z')}
+      <path class="line" d="M98 101h210v210H98Z M203 116v180m-90-90h180"/>
+      ${area('curtain-left','M82 88c29 45 25 163 16 218 27-15 54-21 78-18V88Z')}
+      ${area('curtain-right','M324 88c-29 45-25 163-16 218-27-15-54-21-78-18V88Z')}
+      <path class="detail" d="M98 101c28 30 53 35 78 0m54 0c25 35 50 30 78 0"/>
+      ${area('teapot','M382 366c-8-76 33-118 85-118 59 0 91 53 63 118Z')}
+      ${area('teapot-lid','M414 248c16-26 49-26 65 0Z')}
+      <path class="line" d="M530 279c69-5 73 105-4 103M382 285c-44 9-68 41-76 78 26 7 51-1 76-22"/>
+      <path class="detail" d="M422 328c14 9 30 9 44 0"/>
+      ${area('cup','M213 414h104v52c0 28-104 28-104 0Z')}
+      <path class="line" d="M317 427c48-3 49 53 0 49"/>
+      ${area('saucer','M191 486h148c-14 29-134 29-148 0Z')}
+      ${area('plant-pot','M548 420h66l-8 72h-50Z')}
+      ${area('leaf1','M581 420c-47-28-27-77 2-43Z')}${area('leaf2','M581 420c6-53 55-53 30-3Z')}${area('leaf3','M581 420c-8-53-48-55-23-4Z')}
+      <path class="line" d="M96 530h528"/><path class="detail" d="M243 441h43"/>
     `; }
     function sea() { return `
-      ${area('sky','M67 67H653V386H67Z')}
-      ${area('sun','M491 129a47 47 0 1 0 .1 0Z')}
-      ${area('water','M67 386H653V505H67Z')}
-      ${area('sand','M67 505H653V573H67Z')}
-      ${area('boat','M243 387h222l-35 69H279Z')}${area('sail-left','M352 185v196H258Z')}${area('sail-right','M365 204v177h94Z')}
-      <path class="line" d="M352 164v222m-121 0h245M278 456h152"/>
-      ${area('cloud1','M130 152c5-40 55-42 65-10 38-19 65 29 24 45h-92c-37-12-25-49 3-35Z')}
-      ${area('cloud2','M352 115c4-31 43-33 51-8 30-15 50 23 18 35h-72c-29-9-20-38 3-27Z')}
-      <path class="detail" d="M91 420c45-24 90 24 135 0s90 24 135 0 90 24 135 0 90 24 135 0M91 462c45-24 90 24 135 0s90 24 135 0 90 24 135 0 90 24 135 0m-481 71c21-11 42 11 63 0s42 11 63 0m273 10 11 11m0-11-11 11"/>
-      <path class="detail" d="M504 67v22m0 80v22m70-62h-21m-97 0h-21"/>
+      ${area('sky','M66 66H654V386H66Z')}
+      <circle class="color-area" data-id="sun" cx="526" cy="132" r="43"/>
+      ${area('water','M66 386H654V506H66Z')}
+      ${area('sand','M66 506H654V574H66Z')}
+      ${area('sail-left','M354 176V382H255Z')}${area('sail-right','M354 207v175h97Z')}
+      ${area('boat','M231 382h247l-40 73H272Z')}
+      <path class="line" d="M354 157v225m-123 0h247M272 455h166"/>
+      ${area('cloud1','M120 163c5-34 47-36 57-9 31-15 54 25 21 38h-82c-31-10-21-40 4-29Z')}
+      ${area('cloud2','M330 113c4-29 39-31 48-8 28-13 47 22 18 33h-68c-26-8-18-35 2-25Z')}
+      <path class="detail" d="M526 66v22m0 88v22m66-66h-22m-88 0h-22m93 43-16-16m-54-54-16-16m0 86-16 16m54-54 16-16"/>
+      <path class="detail" d="M88 421c42-22 84 22 126 0s84 22 126 0 84 22 126 0 84 22 126 0m-504 43c42-22 84 22 126 0s84 22 126 0 84 22 126 0 84 22 126 0m-495 72c20-10 40 10 60 0s40 10 60 0m269 9 12 12m0-12-12 12"/>
     `; }
     function drawPage() { svg.innerHTML = pages[current].make(); document.getElementById('pageTitle').textContent = pages[current].name; document.querySelectorAll('.color-area').forEach(el => el.addEventListener('click', () => { el.style.fill = selected; })); }
     function drawPages() { const box=document.getElementById('pageList'); box.innerHTML=pages.map((p,i)=>`<button class="page-choice ${i===current?'active':''}" data-page="${i}"><span class="mini">${mini(p.icon)}</span><span>${p.name}</span></button>`).join(''); box.querySelectorAll('button').forEach(b=>b.onclick=()=>{current=+b.dataset.page;drawPages();drawPage();}); }
