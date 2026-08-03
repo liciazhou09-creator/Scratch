@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Little Quiet Things — Coloring</title>
+  <style>
+    :root { --ink:#39423b; --moss:#738275; --paper:#faf8f1; --cream:#f2eee3; --peach:#dba98f; --line:#3f4940; --shadow:rgba(70,76,60,.13); }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:#e8e5d9; font-family:Georgia, 'Times New Roman', serif; }
+    button { font:inherit; color:inherit; cursor:pointer; }
+    .app { min-height:100vh; display:grid; grid-template-columns:290px minmax(0,1fr); }
+    aside { padding:34px 28px; background:#f5f1e7; border-right:1px solid #ded9cd; display:flex; flex-direction:column; }
+    .brand { display:flex; align-items:center; gap:11px; font-size:21px; letter-spacing:.02em; }
+    .brand-mark { width:29px; height:29px; background:var(--peach); border-radius:50% 50% 50% 6px; transform:rotate(-35deg); position:relative; }
+    .brand-mark:after { content:''; width:8px; height:8px; border:2px solid var(--ink); border-radius:50%; position:absolute; top:8px; left:8px; }
+    h1 { font-size:29px; font-weight:normal; line-height:1.1; margin:45px 0 8px; }
+    .intro { color:#73766d; font-size:14px; line-height:1.5; margin:0 0 30px; }
+    .section-title { font-family:Arial,sans-serif; text-transform:uppercase; letter-spacing:.12em; font-weight:bold; font-size:10px; color:#84877e; margin:0 0 12px; }
+    .page-list { display:grid; gap:8px; }
+    .page-choice { display:grid; grid-template-columns:40px 1fr; align-items:center; gap:11px; text-align:left; background:transparent; border:1px solid transparent; border-radius:12px; padding:8px; font-size:15px; }
+    .page-choice:hover { background:#ede9dd; }
+    .page-choice.active { background:#e3eadf; border-color:#cbd7c7; }
+    .mini { width:40px; height:40px; background:#fffdf7; border:1px solid #d8d3c8; border-radius:8px; display:grid; place-items:center; overflow:hidden; }
+    .mini svg { width:34px; height:34px; stroke:#485049; fill:none; stroke-width:2; }
+    .palette { margin-top:34px; }
+    .swatches { display:grid; grid-template-columns:repeat(6, 1fr); gap:10px; }
+    .swatch { width:31px; height:31px; padding:0; border-radius:50%; border:2px solid rgba(61,70,61,.12); transition:transform .15s; }
+    .swatch:hover { transform:scale(1.12); }
+    .swatch.selected { outline:2px solid var(--ink); outline-offset:3px; }
+    .custom { display:flex; gap:10px; align-items:center; margin-top:16px; font-family:Arial,sans-serif; font-size:12px; color:#777b72; }
+    input[type=color] { width:32px; height:27px; padding:0; border:0; border-radius:6px; background:none; cursor:pointer; }
+    .side-note { margin-top:auto; padding-top:28px; font-size:12px; color:#85877f; line-height:1.55; }
+    main { min-width:0; display:grid; grid-template-rows:auto 1fr; background:var(--cream); }
+    header { height:78px; padding:0 42px; border-bottom:1px solid #ded9cd; background:rgba(250,248,241,.77); display:flex; align-items:center; justify-content:space-between; }
+    .now { font-size:16px; font-style:italic; }
+    .controls { display:flex; gap:10px; }
+    .control { background:#fbfaf5; border:1px solid #d9d5ca; border-radius:20px; padding:9px 15px; font-family:Arial,sans-serif; font-size:12px; }
+    .control:hover { background:#eeeade; }
+    .clear { color:#a05e50; }
+    .workspace { display:grid; place-items:center; padding:42px; overflow:auto; background:radial-gradient(#d8d4c9 1px, transparent 1px) 0 0/18px 18px; }
+    .canvas-card { background:#fffefb; width:min(720px, 100%); aspect-ratio:1.12; box-shadow:0 18px 40px var(--shadow); border:1px solid #e6e1d7; padding:clamp(16px,3vw,32px); position:relative; }
+    svg#coloring { width:100%; height:100%; display:block; overflow:visible; }
+    .color-area { fill:#fffefb; stroke:var(--line); stroke-width:4; stroke-linejoin:round; cursor:pointer; transition:filter .15s; }
+    .color-area:hover { filter:brightness(.94); }
+    .line { fill:none; stroke:var(--line); stroke-width:4; stroke-linecap:round; stroke-linejoin:round; pointer-events:none; }
+    .detail { fill:none; stroke:var(--line); stroke-width:3; stroke-linecap:round; pointer-events:none; }
+    .spark { fill:var(--line); pointer-events:none; }
+    .instruction { position:absolute; bottom:13px; left:0; width:100%; text-align:center; font-family:Arial,sans-serif; color:#85877e; font-size:11px; letter-spacing:.04em; }
+    @media (max-width:700px) { .app { grid-template-columns:1fr; } aside { padding:20px; border-right:0; border-bottom:1px solid #ded9cd; } h1,.intro,.side-note { display:none; } .palette { margin-top:20px; } .page-list { grid-template-columns:repeat(3,1fr); } .page-choice { grid-template-columns:35px 1fr; padding:6px; font-size:13px; } .mini { width:35px; height:35px; } header { height:60px; padding:0 18px; } .workspace { padding:18px; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <div class="brand"><span class="brand-mark"></span><span>little quiet things</span></div>
+      <h1>A little time to color.</h1>
+      <p class="intro">Choose a page, pick a peaceful shade, and tap an open space to bring it to life.</p>
+      <section><p class="section-title">Coloring pages</p><div class="page-list" id="pageList"></div></section>
+      <section class="palette"><p class="section-title">Your palette</p><div class="swatches" id="swatches"></div><label class="custom"><input type="color" id="customColor" value="#b8c6a3"> make your own shade</label></section>
+      <p class="side-note">Your coloring stays here while you play.<br>Take a slow breath between colors.</p>
+    </aside>
+    <main>
+      <header><span class="now" id="pageTitle">A garden morning</span><div class="controls"><button class="control" id="resetBtn">Start over</button><button class="control clear" id="clearBtn">Clear colors</button></div></header>
+      <section class="workspace"><div class="canvas-card"><svg id="coloring" viewBox="0 0 720 640" aria-label="Interactive coloring page"></svg><div class="instruction">PICK A COLOR, THEN CLICK A WHITE SPACE</div></div></section>
+    </main>
+  </div>
+  <script>
+    const palette = ['#b8c6a3','#d8a88d','#8ca6a1','#e1c873','#c6a4ba','#93aac8','#d58f91','#829475','#f0d7ae','#9c8fb1','#656e62','#fbfaf2'];
+    const pages = [
+      { name:'A garden morning', icon:'flower', make:garden },
+      { name:'Tea for one', icon:'cup', make:tea },
+      { name:'By the sea', icon:'sun', make:sea }
+    ];
+    let selected = palette[0], current = 0;
+    const svg = document.getElementById('coloring');
+    function area(id, d) { return `<path class="color-area" data-id="${id}" d="${d}" />`; }
+    function garden() { return `
+      <path class="line" d="M104 543h512M152 543c5-89 30-157 77-204m25 204c-2-140 19-235 62-284m52 284c6-125-7-208-39-250m91 250c-6-108 14-190 58-245m44 245c-5-76 6-135 36-177"/>
+      ${area('sky','M67 67H653V543H67Z')}
+      ${area('sun','M521 104a53 53 0 1 0 .1 0Z')}
+      <path class="detail" d="M521 34v23m0 94v23m70-70h-23m-94 0h-23m118 50-16-16m-65-65-16-16m0 97-16 16m65-65 16-16"/>
+      ${area('hill-left','M67 543V439c53-5 86-52 150-34 61 17 93 82 152 48v90Z')}
+      ${area('hill-right','M369 543v-90c70-54 123-8 165-25 38-16 62-51 119-46v161Z')}
+      ${area('flower1','M176 359c-35-35 13-66 27-29 15-37 63-6 27 29 36 35-12 66-27 29-14 37-62 6-27-29Z')}
+      <circle class="color-area" data-id="flower1-center" cx="203" cy="359" r="10"/>
+      ${area('flower2','M286 274c-31-31 11-58 24-25 13-33 55-6 24 25 31 31-11 58-24 25-13 33-55 6-24-25Z')}
+      <circle class="color-area" data-id="flower2-center" cx="310" cy="274" r="9"/>
+      ${area('flower3','M451 308c-32-32 12-60 25-26 13-34 57-6 25 26 32 32-12 60-25 26-13 34-57 6-25-26Z')}
+      <circle class="color-area" data-id="flower3-center" cx="476" cy="308" r="9"/>
+      <path class="detail" d="M203 388v155m107-244v244m166-209v209m-273-105c-23-17-38-7-42 9m149-75c24-13 38-1 39 14m127 32c25-15 41-3 42 14"/>
+      <path class="detail" d="M100 142c18-16 36-16 54 0m24 49c14-13 29-13 43 0"/>
+    `; }
+    function tea() { return `
+      ${area('wall','M67 67H653V490H67Z')}
+      ${area('table','M67 490H653V573H67Z')}
+      ${area('window','M100 104H297V309H100Z')}
+      ${area('window-sky','M115 119H282V294H115Z')}
+      <path class="line" d="M198 119v175M115 207h167"/>
+      ${area('curtain-left','M81 91c24 46 23 183 2 242 52-27 76-34 113-25V91Z')}
+      ${area('curtain-right','M297 91c-24 46-23 183-2 242-52-27-76-34-113-25V91Z')}
+      ${area('teapot','M376 367c-9-88 45-137 109-111 51 21 53 96 30 142H376Z')}
+      ${area('teapot-lid','M405 262c21-28 61-28 82 0Z')}
+      <path class="line" d="M515 310c75-12 83 93 15 98M376 300c-50 10-67 49-75 88 25 5 49-2 76-20"/>
+      ${area('cup','M224 421h103v58c0 28-103 28-103 0Z')}
+      <path class="line" d="M327 434c53-4 50 58 0 50"/>
+      ${area('saucer','M200 489h151c-17 35-129 35-151 0Z')}
+      ${area('plant-pot','M552 414h65l-9 85h-47Z')}
+      ${area('leaf1','M577 414c-51-31-27-88 5-44Z')}${area('leaf2','M584 414c10-59 62-55 28 2Z')}${area('leaf3','M585 414c-7-61-52-64-23-5Z')}
+      <path class="detail" d="M104 530h512M411 341c14 8 29 8 42 0m-199 104h42"/>
+    `; }
+    function sea() { return `
+      ${area('sky','M67 67H653V386H67Z')}
+      ${area('sun','M491 129a47 47 0 1 0 .1 0Z')}
+      ${area('water','M67 386H653V505H67Z')}
+      ${area('sand','M67 505H653V573H67Z')}
+      ${area('boat','M243 387h222l-35 69H279Z')}${area('sail-left','M352 185v196H258Z')}${area('sail-right','M365 204v177h94Z')}
+      <path class="line" d="M352 164v222m-121 0h245M278 456h152"/>
+      ${area('cloud1','M130 152c5-40 55-42 65-10 38-19 65 29 24 45h-92c-37-12-25-49 3-35Z')}
+      ${area('cloud2','M352 115c4-31 43-33 51-8 30-15 50 23 18 35h-72c-29-9-20-38 3-27Z')}
+      <path class="detail" d="M91 420c45-24 90 24 135 0s90 24 135 0 90 24 135 0 90 24 135 0M91 462c45-24 90 24 135 0s90 24 135 0 90 24 135 0 90 24 135 0m-481 71c21-11 42 11 63 0s42 11 63 0m273 10 11 11m0-11-11 11"/>
+      <path class="detail" d="M504 67v22m0 80v22m70-62h-21m-97 0h-21"/>
+    `; }
+    function drawPage() { svg.innerHTML = pages[current].make(); document.getElementById('pageTitle').textContent = pages[current].name; document.querySelectorAll('.color-area').forEach(el => el.addEventListener('click', () => { el.style.fill = selected; })); }
+    function drawPages() { const box=document.getElementById('pageList'); box.innerHTML=pages.map((p,i)=>`<button class="page-choice ${i===current?'active':''}" data-page="${i}"><span class="mini">${mini(p.icon)}</span><span>${p.name}</span></button>`).join(''); box.querySelectorAll('button').forEach(b=>b.onclick=()=>{current=+b.dataset.page;drawPages();drawPage();}); }
+    function mini(type) { return type==='flower'?'<svg viewBox="0 0 40 40"><path d="M20 35V21M20 21c-12-12 5-20 7-7 2-13 19-5 7 7 12 12-5 20-7 7-2 13-19 5-7-7Z"/><circle cx="20" cy="21" r="3"/></svg>':type==='cup'?'<svg viewBox="0 0 40 40"><path d="M8 13h20v13c0 7-20 7-20 0Z M28 16c9-1 8 11 0 9M5 29h27"/></svg>':'<svg viewBox="0 0 40 40"><circle cx="28" cy="11" r="6"/><path d="M4 25c7-4 14 4 21 0s8 4 12 0M4 31h32M18 30V16l-8 14m8-14 8 14"/></svg>'; }
+    function drawSwatches() { const el=document.getElementById('swatches'); el.innerHTML=palette.map(c=>`<button class="swatch ${c===selected?'selected':''}" data-color="${c}" style="background:${c}" aria-label="Select ${c}"></button>`).join(''); el.querySelectorAll('button').forEach(b=>b.onclick=()=>{selected=b.dataset.color;drawSwatches();}); }
+    document.getElementById('customColor').oninput=e=>{selected=e.target.value;drawSwatches();};
+    document.getElementById('clearBtn').onclick=()=>document.querySelectorAll('.color-area').forEach(x=>x.style.fill='#fffefb');
+    document.getElementById('resetBtn').onclick=()=>{ if(confirm('Start this page over?')) drawPage(); };
+    drawPages(); drawSwatches(); drawPage();
+  </script>
+</body>
+</html>
